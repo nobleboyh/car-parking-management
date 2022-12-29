@@ -25,7 +25,7 @@ public class Vehicle {
     private List<Owner> ownerList;
 
 
-    @OneToOne
+    @OneToOne(mappedBy = "vehicle")
     private ParkingLot parkingLot;
 
     public Vehicle() {
