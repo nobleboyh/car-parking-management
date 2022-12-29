@@ -21,10 +21,9 @@ public class Owner {
             inverseJoinColumns = @JoinColumn(name = "vehicle_id"))
     private List<Vehicle> vehicleList;
 
-    public Owner(String name, Boolean isPresident, List<Vehicle> vehicleList) {
+    public Owner(String name, Boolean isPresident) {
         this.name = name;
         this.isPresident = isPresident;
-        this.vehicleList = vehicleList;
     }
 
     public Owner() {

@@ -24,18 +24,26 @@ public class Vehicle {
             inverseJoinColumns = @JoinColumn(name = "owner_id"))
     private List<Owner> ownerList;
 
-    private Long lotId;
+
+    @OneToOne
+    private ParkingLot parkingLot;
 
     public Vehicle() {
     }
 
-    public Vehicle(String licensePlate, String brand, VehicleSize size, List<Owner> ownerList, Long lotId) {
+    public Vehicle(String licensePlate, String brand, VehicleSize size, ParkingLot parkingLot) {
         this.licensePlate = licensePlate;
         this.brand = brand;
         this.size = size;
-        this.ownerList = ownerList;
-        this.lotId = lotId;
+        this.parkingLot = parkingLot;
     }
+
+    public Vehicle(String licensePlate, String brand, VehicleSize size) {
+        this.licensePlate = licensePlate;
+        this.brand = brand;
+        this.size = size;
+    }
+
 
     public Long getId() {
         return id;
@@ -77,11 +85,11 @@ public class Vehicle {
         this.ownerList = ownerList;
     }
 
-    public Long getLotId() {
-        return lotId;
+    public ParkingLot getParkingLot() {
+        return parkingLot;
     }
 
-    public void setLotId(Long lotId) {
-        this.lotId = lotId;
+    public void setParkingLot(ParkingLot parkingLot) {
+        this.parkingLot = parkingLot;
     }
 }

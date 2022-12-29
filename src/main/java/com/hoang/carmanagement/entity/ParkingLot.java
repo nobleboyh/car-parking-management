@@ -19,7 +19,6 @@ public class ParkingLot {
     private Floor floor;
 
     @OneToOne
-    @JoinColumn(name = "vechicle_id")
     private Vehicle vehicle;
 
     private String name;
@@ -33,6 +32,13 @@ public class ParkingLot {
         this.pricing = pricing;
         this.floor = floor;
         this.vehicle = vehicle;
+        this.name = name;
+        this.occupiedTime = occupiedTime;
+    }
+
+    public ParkingLot(Pricing pricing, Floor floor, String name, Timestamp occupiedTime) {
+        this.pricing = pricing;
+        this.floor = floor;
         this.name = name;
         this.occupiedTime = occupiedTime;
     }
