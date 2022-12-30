@@ -28,6 +28,7 @@ public class VehicleService {
          return vehicleRepo.findById(id).map(this::convertToDTO);
     }
 
+
     private VehicleDTO convertToDTO(Vehicle vehicle){
         return new VehicleDTO(
                 vehicle.getId(),
