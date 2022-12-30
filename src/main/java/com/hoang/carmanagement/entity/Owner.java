@@ -15,10 +15,7 @@ public class Owner {
 
     private Boolean isPresident;
 
-    @ManyToMany
-    @JoinTable(name = "vehicle_owner",
-            joinColumns = @JoinColumn(name = "owner_id"),
-            inverseJoinColumns = @JoinColumn(name = "vehicle_id"))
+    @ManyToMany(mappedBy = "ownerList", fetch = FetchType.LAZY)
     private List<Vehicle> vehicleList;
 
     public Owner(String name, Boolean isPresident) {

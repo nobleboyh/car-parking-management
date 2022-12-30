@@ -18,7 +18,7 @@ public class Vehicle {
 
     private VehicleSize size;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "vehicle_owner",
             joinColumns = @JoinColumn(name = "vehicle_id"),
             inverseJoinColumns = @JoinColumn(name = "owner_id"))
