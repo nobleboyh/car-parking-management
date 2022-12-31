@@ -26,8 +26,12 @@ public class VehicleService {
         return vehicleRepo.findAll().stream().map(this::convertToDTO).toList();
     }
 
-    public Optional<VehicleDTO> getVehicleById(Long id){
-         return vehicleRepo.findById(id).map(this::convertToDTO);
+    public Optional<Vehicle> getVehicleById(Long id){
+         return vehicleRepo.findById(id);
+    }
+
+    public Optional<VehicleDTO> getVehicleDTOById(Long id){
+        return vehicleRepo.findById(id).map(this::convertToDTO);
     }
 
     public List<OwnerDTO> getOwnerLists(Vehicle vehicle){

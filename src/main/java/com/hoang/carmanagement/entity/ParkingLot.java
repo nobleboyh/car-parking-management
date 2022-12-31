@@ -19,6 +19,7 @@ public class ParkingLot {
     private Floor floor;
 
     @OneToOne
+    @JoinColumn(name = "vehicle_id", unique = true)
     private Vehicle vehicle;
 
     private String name;

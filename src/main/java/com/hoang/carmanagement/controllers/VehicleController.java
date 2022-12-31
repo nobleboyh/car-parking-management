@@ -34,7 +34,7 @@ public class VehicleController extends BaseController{
 
     @GetMapping("/find")
     public ResponseEntity<ResponseObject> getVehicleById(@RequestParam Long id){
-        Optional<VehicleDTO> vehicleDTO = vehicleService.getVehicleById(id);
+        Optional<VehicleDTO> vehicleDTO = vehicleService.getVehicleDTOById(id);
         if(vehicleDTO.isPresent()){
             return ResponseEntity.ok(new ResponseObject("OK","Get vehicles successfully",
                     vehicleService.getVehicleById(id)));
