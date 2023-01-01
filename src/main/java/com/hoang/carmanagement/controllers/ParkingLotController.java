@@ -1,5 +1,6 @@
 package com.hoang.carmanagement.controllers;
 
+import com.hoang.carmanagement.dto.ParkingLotDTO;
 import com.hoang.carmanagement.entity.ParkingLot;
 import com.hoang.carmanagement.models.ResponseObject;
 import com.hoang.carmanagement.repo.ParkingLotRepo;
@@ -31,11 +32,13 @@ public class ParkingLotController extends BaseController {
     }
 
     @PutMapping("/add-vehicle")
-    public ResponseEntity<ResponseObject> addVehicleToLot(@RequestParam(name = "lotid") Long lotId, @RequestParam(name = "vid") Long vehicleId){
+    public ResponseEntity<ResponseObject> addVehicleToLot(@RequestParam(name = "lotid") Long lotId,
+                                                          @RequestParam(name = "vid") Long vehicleId){
         if (parkingLotService.addVehicleToLot(lotId, vehicleId)){
             return ResponseEntity.ok().build();
         }
-        return ResponseEntity.badRequest().body( new ResponseObject("Fail", "No vehicle or Lot found", Optional.empty()));
+        return ResponseEntity.badRequest().body( new ResponseObject("Fail", "No vehicle or Lot found",
+                Optional.empty()));
     }
 
     @PutMapping("/checkout-vehicle")
@@ -44,10 +47,34 @@ public class ParkingLotController extends BaseController {
         return ResponseEntity.ok().build();
     }
 
+    /*Test only*/
     @GetMapping("/get-time")
     public ResponseEntity<ResponseObject> getOccupiedTime(@RequestParam(name = "lotid") Long lotId){
-        return ResponseEntity.ok(new ResponseObject("OK", "Get time in millis", parkingLotService.getOccupiedTime(lotId).toMillis()));
+        return ResponseEntity.ok
+                (new ResponseObject("OK", "Get time in millis",
+                        parkingLotService.getOccupiedTime(lotId).toMillis()));
     }
+
+    @GetMapping("/pricing")
+    public ResponseEntity<ResponseObject> pricingLot(@RequestParam(name = "lotid") Long lotId){
+        return ResponseEntity.ok(new ResponseObject("OK", "Get price successfully",
+                parkingLotService.pricingLot(lotId)));
+    }
+
+    @PostMapping("/add")
+    public ResponseEntity<ResponseObject> addNewParkingLot(@RequestBody ParkingLotDTO parkingLot){
+        ParkingLotDTO parkingLotDTO = parkingLotService.saveParkinglot(parkingLot);
+        return ResponseEntity.ok(new ResponseObject("OK", "Save new parking lot ok", parkingLotDTO));
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<ResponseObject> updateParkingLot(@RequestBody ParkingLotDTO parkingLot){
+        Optional<ParkingLotDTO> parkingLotDTO = parkingLotService.updateParkingLot(parkingLot);
+        return parkingLotDTO
+                .map(lotDTO -> ResponseEntity.ok(new ResponseObject("OK", "Save new parking lot ok", lotDTO)))
+                .orElseGet(() -> ResponseEntity.badRequest().build());
+    }
+
 
     @ExceptionHandler(Exception.class)
     private ResponseEntity<String> handleException(Exception exception){

@@ -2,15 +2,13 @@ package com.hoang.carmanagement.controllers;
 
 import com.hoang.carmanagement.dto.OwnerDTO;
 import com.hoang.carmanagement.dto.VehicleDTO;
+import com.hoang.carmanagement.entity.Pricing;
 import com.hoang.carmanagement.entity.Vehicle;
 import com.hoang.carmanagement.models.ResponseObject;
 import com.hoang.carmanagement.services.VehicleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -52,5 +50,25 @@ public class VehicleController extends BaseController{
         }else{
             return ResponseEntity.noContent().build();
         }
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<ResponseObject> updateVehicle(@RequestBody VehicleDTO vehicleDTO){
+        Optional<VehicleDTO> newVec = vehicleService.updateVehicle(vehicleDTO);
+        return newVec.map(f->ResponseEntity.ok(new ResponseObject("OK", "update OK", f))).orElse(ResponseEntity.badRequest().build());
+    }
+
+    @PostMapping("/add")
+    public ResponseEntity<ResponseObject> addVehicle(@RequestBody VehicleDTO vehicleDTO){
+        VehicleDTO newVec = vehicleService.addVehicle(vehicleDTO);
+        return ResponseEntity.ok(new ResponseObject("OK", "add OK", newVec));
+    }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<ResponseObject> deleteVehicle(@RequestParam Long id){
+        if( vehicleService.deleteVehicle(id)) {
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.badRequest().build();
     }
 }

@@ -3,6 +3,7 @@ package com.hoang.carmanagement.test;
 import com.hoang.carmanagement.entity.*;
 import com.hoang.carmanagement.enums.VehicleSize;
 import com.hoang.carmanagement.repo.*;
+import com.hoang.carmanagement.services.ParkingLotService;
 import jakarta.persistence.Table;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -26,6 +27,8 @@ public class InitDB implements CommandLineRunner {
 
     private ParkingLotRepo parkingLotRepo;
 
+    private ParkingLotService parkingLotService;
+
     @Autowired
     public void setFloorRepo(FloorRepo floorRepo) {
         this.floorRepo = floorRepo;
@@ -34,6 +37,11 @@ public class InitDB implements CommandLineRunner {
     @Autowired
     public void setPricingRepo(PricingRepo pricingRepo) {
         this.pricingRepo = pricingRepo;
+    }
+
+    @Autowired
+    public void setParkingLotService(ParkingLotService parkingLotService) {
+        this.parkingLotService = parkingLotService;
     }
 
     @Autowired
@@ -83,10 +91,10 @@ public class InitDB implements CommandLineRunner {
         ParkingLot[] parkingLots = new ParkingLot[10];
         IntStream.range(0,parkingLots.length).
                 forEach(i -> {
-                            parkingLots[i] = new  ParkingLot(pricing1, floor1, "P" + i, new Timestamp(System.currentTimeMillis()));
+                            parkingLots[i] = new  ParkingLot(pricing1, floor1, "P" + i, null);
                             parkingLotRepo.save(parkingLots[i]);
                         }
                 );
-        parkingLots[0].setVehicle(vehicle1);
+        parkingLotService.addVehicleToLot(parkingLots[0].getId(), vehicle1.getId());
     }
 }

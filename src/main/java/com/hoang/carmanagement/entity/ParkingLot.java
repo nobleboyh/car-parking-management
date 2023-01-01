@@ -24,6 +24,7 @@ public class ParkingLot {
 
     private String name;
 
+    @Temporal(TemporalType.TIMESTAMP)
     private Timestamp occupiedTime;
 
     public ParkingLot() {
@@ -38,6 +39,14 @@ public class ParkingLot {
     }
 
     public ParkingLot(Pricing pricing, Floor floor, String name, Timestamp occupiedTime) {
+        this.pricing = pricing;
+        this.floor = floor;
+        this.name = name;
+        this.occupiedTime = occupiedTime;
+    }
+
+    public ParkingLot(Long id,Pricing pricing, Floor floor, String name, Timestamp occupiedTime) {
+        this.id = id;
         this.pricing = pricing;
         this.floor = floor;
         this.name = name;

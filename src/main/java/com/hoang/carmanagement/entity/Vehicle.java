@@ -44,6 +44,13 @@ public class Vehicle {
         this.size = size;
     }
 
+    public Vehicle(Long id, String licensePlate, String brand, VehicleSize size) {
+        this.id = id;
+        this.licensePlate = licensePlate;
+        this.brand = brand;
+        this.size = size;
+    }
+
 
     public Long getId() {
         return id;

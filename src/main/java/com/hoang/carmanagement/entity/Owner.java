@@ -23,6 +23,12 @@ public class Owner {
         this.isPresident = isPresident;
     }
 
+    public Owner(Long id, String name, Boolean isPresident) {
+        this.id = id;
+        this.name = name;
+        this.isPresident = isPresident;
+    }
+
     public Owner() {
 
     }
