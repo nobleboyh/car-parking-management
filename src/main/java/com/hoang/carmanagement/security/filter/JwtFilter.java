@@ -3,6 +3,7 @@ package com.hoang.carmanagement.security.filter;
 import com.hoang.carmanagement.security.util.JwtUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,13 +34,24 @@ public class JwtFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         final String authHeader = request.getHeader("Authorization");
         final String userEmail;
-        final String jwtToken;
+        String jwtToken = "";
 
         if(authHeader == null || !authHeader.startsWith("Bearer")){
-            filterChain.doFilter(request,response);
-            return;
+            Cookie[] cookies = request.getCookies();
+            if(cookies != null){
+                for (Cookie cookie : cookies){
+                    if(cookie.getName().equals("token")){
+                        jwtToken = cookie.getValue();
+                    }
+                }
+            }
+            if (jwtToken.equals("")){
+                filterChain.doFilter(request,response);
+                return;
+            }
+        }else{
+            jwtToken = authHeader.substring(7); //Remove bearer
         }
-        jwtToken = authHeader.substring(7); //Remove bearer
         jwtUtils.setToken(jwtToken);
         userEmail = jwtUtils.extractUsername();
 

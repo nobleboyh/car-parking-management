@@ -3,6 +3,8 @@ package com.hoang.carmanagement.controllers;
 import com.hoang.carmanagement.models.ResponseObject;
 import com.hoang.carmanagement.security.models.AuthenticationRequest;
 import com.hoang.carmanagement.security.util.JwtUtils;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -33,13 +35,20 @@ public class AuthenticationController extends BaseController{
     }
 
     @GetMapping("/")
-    public ResponseEntity<String> getJwtToken(@RequestBody AuthenticationRequest request){
+    public ResponseEntity<String> getJwtToken(@RequestBody AuthenticationRequest request, HttpServletResponse response){
         //Check user/pw
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
         );
 
         final UserDetails userDetails = userDetailsService.loadUserByUsername(request.getEmail());
-        return ResponseEntity.ok(jwtUtils.generateToken(userDetails));
+        String token = jwtUtils.generateToken(userDetails);
+        Cookie cookie = new Cookie("token",token);
+        cookie.setHttpOnly(true);
+        //cookie.setSecure(true);   //Enable this: Cookie only is transferred through HTTPS
+        cookie.setPath("/");
+        cookie.setMaxAge(7*24*60*60);
+        response.addCookie(cookie);
+        return ResponseEntity.ok(token);
     }
 }
