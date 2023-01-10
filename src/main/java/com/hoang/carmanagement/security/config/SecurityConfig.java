@@ -46,7 +46,7 @@ public class SecurityConfig {
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .authenticationProvider(authenticationProvider())
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and().csrf().and()
+                .and().csrf().disable()
                 .httpBasic();
         http.headers().frameOptions().disable();    //For H2-console
         return http.build();

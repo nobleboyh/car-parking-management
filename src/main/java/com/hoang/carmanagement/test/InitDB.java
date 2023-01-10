@@ -62,6 +62,12 @@ public class InitDB implements CommandLineRunner {
     @Override
     @Transactional
     public void run(String... args) throws Exception {
+        //Check if exist
+        List<Floor> floors = floorRepo.findAll();
+        if (!floors.isEmpty()){
+            return;
+        }
+
         //Create new Floor
         Floor floor1 = new Floor("B1");
         Floor floor2 = new Floor("B2");

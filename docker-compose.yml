@@ -1,0 +1,32 @@
+services:
+  car-app:
+    container_name: car-be-web-app
+    image: hoangat/car-management
+    build: .  #Run the build docker image first
+    ports:
+      - 8080:8080
+    environment:
+      MYSQL_HOST: car-db
+      MYSQL_HOST_PORT: 3306
+      MYSQL_PASSWORD: hoang
+      MYSQL_USER: root
+    restart: always
+    networks:
+      - backend
+#    links: #To simplify, can use internal container link
+#      - mysqldb
+  mysqldb:
+    container_name: car-db
+    image: mysql
+    volumes:
+      - D:/4. Backup/dockers-volume:/var/lib/mysql
+    ports:
+      - 3307:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: hoang
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge
